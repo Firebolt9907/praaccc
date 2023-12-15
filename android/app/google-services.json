@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "348883026139",
+    "project_id": "prac-1e4c7",
+    "storage_bucket": "prac-1e4c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348883026139:android:2e551953e91470d1b7ccfe",
+        "android_client_info": {
+          "package_name": "com.firebolt.prac"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy2V_1RxP8cc7HIB_zZBgXzlCRPs2emqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
