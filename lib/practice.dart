@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:prac/addRating.dart';
-import 'package:prac/home.dart';
+import 'package:praaccc/addRating.dart';
+import 'package:praaccc/home.dart';
 
 class PracticePage extends StatefulWidget {
   const PracticePage({super.key, required this.index});
@@ -129,8 +129,9 @@ class _PracticePageState extends State<PracticePage> {
                                       ? true
                                       : false,
                             );
-                          });
-                      setState(() {});
+                          }).then((value) {
+                        setState(() {});
+                      });
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

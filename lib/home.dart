@@ -4,10 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:prac/addPractice.dart';
-import 'package:prac/login.dart';
-import 'package:prac/main.dart';
-import 'package:prac/practice.dart';
+import 'package:praaccc/addPractice.dart';
+import 'package:praaccc/login.dart';
+import 'package:praaccc/main.dart';
+import 'package:praaccc/practice.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -45,6 +45,8 @@ List<String> numberEndings = [
 ];
 
 class _HomePageState extends State<HomePage> {
+  bool deleteError = false;
+
   @override
   void initState() {
     FirebaseFirestore.instance.collection("days").snapshots().listen((event) {
@@ -149,18 +151,59 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ));
             } else if (days[index] == 'logout') {
-              return TextButton(
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => WillPopScope(
-                                  child: FirstPage(),
-                                  onWillPop: () async => false,
-                                )));
-                  },
-                  child: Text("Log Out"));
+              return IntrinsicHeight(
+                child: Column(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut();
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => WillPopScope(
+                                        child: FirstPage(),
+                                        onWillPop: () async => false,
+                                      )));
+                        },
+                        child: Text("Log Out")),
+                    deleteError
+                        ? Text(
+                            "Press the log out button above, then log in, and then click this button",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : TextButton(
+                            onPressed: () {
+                              FirebaseAuth.instance.currentUser!
+                                  .delete()
+                                  .onError((error, stackTrace) {
+                                print(error);
+                                print(error
+                                    .toString()
+                                    .contains("requires-recent-login"));
+                                if (error
+                                    .toString()
+                                    .contains("requires-recent-login")) {
+                                  return setState(() {
+                                    deleteError = true;
+                                  });
+                                }
+                              }).then(
+                                (value) {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) => WillPopScope(
+                                                child: FirstPage(),
+                                                onWillPop: () async => false,
+                                              )));
+                                },
+                              );
+                            },
+                            child: Text("Delete Account")),
+                  ],
+                ),
+              );
             } else if (days[index] == 'uid') {
               if (FirebaseAuth.instance.currentUser!.photoURL!
                       .split(' ')
@@ -266,7 +309,7 @@ class _HomePageState extends State<HomePage> {
                                                 color: Colors.blue[900],
                                                 child: Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       vertical: 2.0,
                                                       horizontal: 10),
                                                   child: Text(
@@ -279,7 +322,11 @@ class _HomePageState extends State<HomePage> {
                                               ))
                                           : SizedBox.shrink(),
                                       Padding(
-                                          padding: EdgeInsets.only(right: 8)),
+                                          padding: EdgeInsets.only(
+                                              right:
+                                                  days[index]['AM']['v'] == true
+                                                      ? 8
+                                                      : 0)),
                                       days[index]['AM']['v'] == true
                                           ? ClipRRect(
                                               borderRadius:
@@ -288,7 +335,7 @@ class _HomePageState extends State<HomePage> {
                                                 color: Colors.purple[900],
                                                 child: Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       vertical: 2.0,
                                                       horizontal: 10),
                                                   child: Text(
@@ -299,7 +346,7 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                 ),
                                               ))
-                                          : Container(),
+                                          : SizedBox.shrink(),
                                     ],
                                   ),
                                 )),
@@ -319,7 +366,7 @@ class _HomePageState extends State<HomePage> {
                                                 color: Colors.blue[900],
                                                 child: Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       vertical: 2.0,
                                                       horizontal: 10),
                                                   child: Text(
@@ -341,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                                                 color: Colors.purple[900],
                                                 child: Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       vertical: 2.0,
                                                       horizontal: 10),
                                                   child: Text(
