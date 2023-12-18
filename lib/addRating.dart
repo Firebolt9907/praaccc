@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:praaccc/home.dart';
+import 'dart:io';
 
 class AddRating extends StatefulWidget {
   const AddRating({super.key, this.am, this.index, this.pmExists});
@@ -399,8 +400,11 @@ class _AddRatingState extends State<AddRating> {
                     'comment': _comment.text,
                     'v': !admin
                         ? FirebaseAuth.instance.currentUser!.photoURL!
-                                    .split(' ')[1] ==
-                                "true"
+                                        .split(' ')[1] ==
+                                    "true" ||
+                                FirebaseAuth.instance.currentUser!.photoURL!
+                                        .split('%20')[1] ==
+                                    "true"
                             ? true
                             : false
                         : varsity,
@@ -408,6 +412,7 @@ class _AddRatingState extends State<AddRating> {
                     'grade': !admin
                         ? int.parse(FirebaseAuth.instance.currentUser!.photoURL!
                             .split(' ')[0]
+                            .split('%20')[0]
                             .replaceAll('[', '')
                             .replaceAll(',', ''))
                         : grade,
