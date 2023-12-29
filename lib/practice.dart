@@ -21,7 +21,7 @@ class _PracticePageState extends State<PracticePage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         border: Border.all(width: 0, color: Colors.transparent),
         middle: Text(
-          "${days[widget.index]['weekday']}, ${months[days[widget.index]["month"] - 1]} ${days[widget.index]["day"].toString() + numberEndings[days[widget.index]["day"] % 10 - 1]}",
+          "${days[widget.index]['weekday']}, ${months[days[widget.index]["month"] - 1]} ${days[widget.index]["day"].toString() + numberEndings[((days[widget.index]["day"] % 10) == 0 ? 10 : days[widget.index]["day"] % 10) - 1]}",
           style: TextStyle(
             color: Theme.of(context).colorScheme.primary,
           ),
