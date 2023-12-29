@@ -205,10 +205,15 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             } else if (days[index] == 'uid') {
-              if (FirebaseAuth.instance.currentUser!.photoURL!
-                      .split(' ')
-                      .length ==
-                  2) {
+              print(FirebaseAuth.instance.currentUser!.photoURL);
+              if ((FirebaseAuth.instance.currentUser!.photoURL ?? '')
+                          .split(' ')
+                          .length ==
+                      2 ||
+                  (FirebaseAuth.instance.currentUser!.photoURL ?? '')
+                          .split('%20')
+                          .length ==
+                      2) {
                 return Text(
                   '',
                   textAlign: TextAlign.center,
@@ -255,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                      "${days[index]['weekday']}, ${months[days[index]["month"] - 1]} ${days[index]["day"].toString() + numberEndings[days[index]["day"] % 10 - 1]}",
+                                      "${days[index]['weekday']}, ${months[days[index]["month"] - 1]} ${days[index]["day"].toString() + numberEndings[((days[index]["day"] % 10) == 0 ? 10 : days[index]["day"] % 10) - 1]}",
                                       style: TextStyle(
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold)),
