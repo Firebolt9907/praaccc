@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,9 +53,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     FirebaseFirestore.instance.collection("days").snapshots().listen((event) {
       setState(() {
-        days = ['placeholder'];
+        days = ['placeholder', 'uid'];
         days.addAll(event.docs.toList().reversed.toList());
-        days.addAll(['logout', 'uid']);
+        days.addAll(['logout']);
       });
     });
     super.initState();
@@ -165,6 +167,13 @@ class _HomePageState extends State<HomePage> {
                                         onWillPop: () async => false,
                                       )));
                         },
+                        onLongPress: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => NamePage(),
+                              ));
+                        },
                         child: Text("Log Out")),
                     deleteError
                         ? Text(
@@ -207,19 +216,14 @@ class _HomePageState extends State<HomePage> {
             } else if (days[index] == 'uid') {
               print(FirebaseAuth.instance.currentUser!.photoURL);
               if ((FirebaseAuth.instance.currentUser!.photoURL ?? '')
-                          .split(' ')
-                          .length ==
-                      2 ||
-                  (FirebaseAuth.instance.currentUser!.photoURL ?? '')
                           .split('%20')
                           .length ==
-                      2) {
-                return Text(
-                  '',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
-                );
-              } else {
+                      2 &&
+                  FirebaseAuth.instance.currentUser!.displayName!
+                      .contains(" ")) {
+                return Container();
+              } else if (FirebaseAuth.instance.currentUser!.displayName!
+                  .contains(" ")) {
                 return ElevatedButton(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -228,8 +232,17 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) => GradePage(),
                           ));
                     },
-                    child: Text(
-                        "CLICK THIS AND FIX MY MISTAKE BC IDK HOW TO MANUALLY DO IT MYSELF"));
+                    child: Text("Complete Your Account Creation"));
+              } else {
+                return ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => NamePage(),
+                          ));
+                    },
+                    child: Text("Complete Your Account Creation"));
               }
             } else {
               return Padding(
@@ -237,11 +250,31 @@ class _HomePageState extends State<HomePage> {
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => PracticePage(index: index),
-                        ));
+                    if ((FirebaseAuth.instance.currentUser!.photoURL ?? '')
+                                .split('%20')
+                                .length ==
+                            2 &&
+                        FirebaseAuth.instance.currentUser!.displayName!
+                            .contains(" ")) {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => PracticePage(index: index),
+                          ));
+                    } else if (FirebaseAuth.instance.currentUser!.displayName!
+                        .contains(" ")) {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => GradePage(),
+                          ));
+                    } else {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => NamePage(),
+                          ));
+                    }
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),

@@ -483,7 +483,7 @@ class _GradePageState extends State<GradePage> {
                     color: Theme.of(context).colorScheme.primary,
                     onPressed: () async {
                       await FirebaseAuth.instance.currentUser!
-                          .updatePhotoURL("$grade $varsity")
+                          .updatePhotoURL("$grade%20$varsity")
                           .then((value) {
                         Navigator.push(
                             context,
