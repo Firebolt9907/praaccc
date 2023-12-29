@@ -71,8 +71,18 @@ class _MyAppState extends State<MyApp> {
           '/start': (context) => FirstPage(),
           '/home': (context) => HomePage(),
         },
-        initialRoute:
-            FirebaseAuth.instance.currentUser == null ? '/start' : '/home',
+        initialRoute: FirebaseAuth.instance.currentUser == null
+            ? '/start'
+            : (FirebaseAuth.instance.currentUser!.photoURL ?? ' ')
+                            .split(' ')
+                            .length ==
+                        2 ||
+                    (FirebaseAuth.instance.currentUser!.photoURL ?? ' ')
+                            .split('%20')
+                            .length ==
+                        2
+                ? '/home'
+                : '/start',
         // '/start',
       );
     });

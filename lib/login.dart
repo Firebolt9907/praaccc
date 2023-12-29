@@ -218,10 +218,35 @@ class _PasswordPageState extends State<PasswordPage> {
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(
-                                        builder: (context) => WillPopScope(
-                                              child: HomePage(),
-                                              onWillPop: () async => false,
-                                            )));
+                                        builder: (context) => (FirebaseAuth
+                                                            .instance
+                                                            .currentUser!
+                                                            .displayName ??
+                                                        '')
+                                                    .split(' ')
+                                                    .length ==
+                                                2
+                                            ? (FirebaseAuth.instance.currentUser!
+                                                                    .photoURL ??
+                                                                '')
+                                                            .split(' ')
+                                                            .length ==
+                                                        2 ||
+                                                    (FirebaseAuth
+                                                                    .instance
+                                                                    .currentUser!
+                                                                    .photoURL ??
+                                                                '')
+                                                            .split('%20')
+                                                            .length ==
+                                                        2
+                                                ? WillPopScope(
+                                                    child: HomePage(),
+                                                    onWillPop: () async =>
+                                                        false,
+                                                  )
+                                                : GradePage()
+                                            : NamePage()));
                               }).onError((err, stackTrace) {
                                 print(err
                                     .toString()
