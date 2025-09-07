@@ -1,16 +1,23 @@
-# prac
+# Praaccc
 
-A new Flutter project.
+[Google Play Store](https://play.google.com/store/apps/details?id=com.firebolt.prac&hl=en_US)
 
-## Getting Started
+## About This Project
 
-This project is a starting point for a Flutter application.
+This is an app I created to allow my swim team to rate our practice workouts, allowing our coaches to challenge us effectively. 
 
-A few resources to get you started if this is your first Flutter project:
+## <code>// TODO:</code>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Fix an iOS bug that prevents users from leaving ratings until they restart the app
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+
+- Separated databases for Junior Varsity and Varsity
+- Realtime updates for the current day
+
+## Technologies Used
+
+- Flutter for building the app
+- Firebase Firestore for the realtime database
+- Firebase Authentication for account management
+- Firebase Cloud Functions and Cloud Messaging for notification management
